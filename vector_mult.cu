@@ -20,12 +20,13 @@ __global__ void matrixMultiplyGPU(int *A, int *B, int *C, const int n) {
 }
 
 void matrixMultiply(int *A, int *B, int *C, const int n) {
-	for (int i = 0; i < n*n; i++)
-	{
-		for (int k = 0; k < n; k++) {
-			C[n * i + j] += A[n * i + k]*B[n * k + j];
-		}
-	}
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            for(int k = 0; k < n; k++) {
+                C[i * n + j] += A[i * n + k] * B[j + k * n];
+            }
+        }
+    }
 }
 
 // Function that opens a file and converts the matrix inside to a matrix of type float**
