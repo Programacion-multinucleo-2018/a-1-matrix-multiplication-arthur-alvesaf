@@ -1,7 +1,8 @@
 // Program by Arthur Alves Araujo Ferreira - All rights reserved
 // ITESM ID: A01022593
 #include <iostream>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 #include <chrono>
 
 using namespace std;
@@ -55,7 +56,7 @@ int main(int argc, char **argv) {
     
 	int repetitions = 1;
     int n = 1000;
-	int bytes = n*n * sizeof(int)
+	int bytes = n*n * sizeof(int);
 
     int* h_A = createMatrix(n);
     int* h_B = createMatrix(n);
