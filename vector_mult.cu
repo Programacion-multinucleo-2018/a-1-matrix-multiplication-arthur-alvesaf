@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <chrono>
+#include <cuda_runtime.h>
 
 using namespace std;
 
