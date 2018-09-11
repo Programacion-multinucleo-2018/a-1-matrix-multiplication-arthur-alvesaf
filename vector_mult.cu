@@ -49,9 +49,9 @@ int main(int argc, char **argv) {
 	// Set up device
 	int dev = 0;
 	cudaDevideProp deviceProp;
-	SAFE_CALL(cudaGetDeviceProperties(&deviceProp, dev), "Error device prop");
+	cudaGetDeviceProperties(&deviceProp, dev);
 	printf("Using Device %d: %s\n", dev, deviceProp.name);
-    SAFE_CALL(cudaSetDevice(dev), "Error setting device");
+    cudaSetDevice(dev);
     
 	int repetitions = 1;
     int n = 1000;
@@ -70,13 +70,13 @@ int main(int argc, char **argv) {
 	memSet(gpuRef, 0, bytes);
 
 	int *d_A, *d_B, *d_C;
-    SAFE_CALL(cudaMalloc((void **)&d_A, bytes), "Error allocating d_A");
-    SAFE_CALL(cudaMalloc((void **)&d_B, bytes), "Error allocating d_B");
-    SAFE_CALL(cudaMalloc((void **)&d_C, bytes), "Error allocating d_C");
+    cudaMalloc((void **)&d_A, bytes);
+    cudaMalloc((void **)&d_B, bytes);
+    cudaMalloc((void **)&d_C, bytes);
 
-	SAFE_CALL(cudaMemcpy(d_A, h_A, bytes, cudaMemcpyHostToDevice), "Error copying d_A");
-    SAFE_CALL(cudaMemcpy(d_B, h_B, bytes, cudaMemcpyHostToDevice), "Error copying d_B");
-    SAFE_CALL(cudaMemset(d_C, 0, bytes), "Error setting d_C to zeros");
+	cudaMemcpy(d_A, h_A, bytes, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_B, h_B, bytes, cudaMemcpyHostToDevice);
+    cudaMemset(d_C, 0, bytes);
 
 	dim3 block(32, 32);
     dim3 grid((n + block.x - 1) / block.x, (n + block.y - 1) / block.y);
