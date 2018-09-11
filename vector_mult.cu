@@ -19,6 +19,15 @@ __global__ void matrixMultiplyGPU(int *A, int *B, int *C, const int n) {
     }
 }
 
+void matrixMultiply(int *A, int *B, int *C, const int n) {
+	for (int i = 0; i < n*n; i++)
+	{
+		for (int k = 0; k < n; k++) {
+			C[n * i + j] += A[n * i + k]*B[n * k + j];
+		}
+	}
+}
+
 // Function that opens a file and converts the matrix inside to a matrix of type float**
 int* createMatrix(int n) {
 	// Allocate space for variable matrix
@@ -46,7 +55,7 @@ void printMatrix(int** matrix, int cols, int rows) {
 	return;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
 	// Set up device
 	int dev = 0;
 	cudaDevideProp deviceProp;
@@ -58,17 +67,22 @@ int main(int argc, char **argv) {
     int n = 1000;
 	int bytes = n*n * sizeof(int);
 
-    int* h_A = createMatrix(n);
-    int* h_B = createMatrix(n);
+    int *h_A = createMatrix(n);
+    int *h_B = createMatrix(n);
 
-    int* hostRef = (int *)malloc(bytes);
-    int* gpuRef = (int *)malloc(bytes);
+    int *hostRef = (int *)malloc(bytes);
+    int *gpuRef = (int *)malloc(bytes);
 	// printMatrix(h_A, n, n);
 	// printMatrix(h_B, n, n);
 
 	// zero matrix
 	memSet(hostRef, 0, bytes);
 	memSet(gpuRef, 0, bytes);
+
+	auto start = std::chrono::high_resolution_clock::now();
+	matrixMultiply(h_A, h_B, hostRef, n);
+	auto end = std::chrono::high_resolution_clock::now();
+
 
 	int *d_A, *d_B, *d_C;
     cudaMalloc((void **)&d_A, bytes);
@@ -96,7 +110,9 @@ int main(int argc, char **argv) {
         totalTime += duration_ms.count();
     }
 
-    std::cout << "time omp (ms): " << totalTime / repetitions << std::endl;
+    std::cout << "time cuda (ms): " << totalTime / repetitions << std::endl;
+
+
 
 	// Free memory that was allocated for matrixes
 	free(h_A);
