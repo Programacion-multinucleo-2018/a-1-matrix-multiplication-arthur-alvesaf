@@ -4,7 +4,7 @@
 #include <iostream>
 #include <chrono>
 
-const bool CPU_AND_COMPARE = false;
+const bool CPU_AND_COMPARE = true;
 
 // Function that multiplies 2 matrixes with cuda
 __global__ void matrixMultiplyGPU(int *A, int *B, int *C, const int n) {
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 
     // Code configuration
     int repetitions = 20;
-    int n = 1000;
+    int n = 50;
     int nBytes = n*n * sizeof(int*);
 
     // Input matrix initialization and fill

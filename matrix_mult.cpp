@@ -76,9 +76,9 @@ void printMatrix(int** matrix, int cols, int rows) {
 }
 
 int main() {
-    int repetitions = 1;
-    int rows = 4000;
-    int cols = 4000;
+    int repetitions = 20;
+    int rows = 50;
+    int cols = 50;
 
     int** m1 = createMatrix(rows, cols);
     int** m2 = createMatrix(rows, cols);
