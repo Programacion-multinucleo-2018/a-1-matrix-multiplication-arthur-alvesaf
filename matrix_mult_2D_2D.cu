@@ -54,8 +54,8 @@ int main(int argc, char* argv[]) {
     cudaSetDevice(dev);
 
     // Code configuration
-    int repetitions = 1;
-    int n = 1000;
+    int repetitions = 20;
+    int n = 4000;
     int nBytes = n*n * sizeof(int*);
 
     // Input matrix initialization and fill

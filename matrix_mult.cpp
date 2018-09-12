@@ -77,8 +77,8 @@ void printMatrix(int** matrix, int cols, int rows) {
 
 int main() {
     int repetitions = 1;
-    int rows = 1000;
-    int cols = 1000;
+    int rows = 4000;
+    int cols = 4000;
 
     int** m1 = createMatrix(rows, cols);
     int** m2 = createMatrix(rows, cols);
@@ -90,12 +90,12 @@ int main() {
         auto start = std::chrono::high_resolution_clock::now();
         m3 = matrixMultiply(m1, m2, rows, cols, rows, cols);
         auto end = std::chrono::high_resolution_clock::now();
-        
+
         std::chrono::duration<float, std::milli> duration_ms = end - start;
         totalTime += duration_ms.count();
     }
 
-    std::cout << "time omp (ms): " << totalTime / repetitions << std::endl;
+    std::cout << "time 	(ms): " << totalTime / repetitions << std::endl;
 
 	// Free memory that was allocated for matrixes
 	freeMatrix(m1, cols);

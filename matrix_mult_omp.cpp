@@ -8,19 +8,19 @@
 using namespace std;
 
 // Funcion que aloca memoria
-int** matrixAlloc() {
-	int** matrix = (int**) malloc(rowsA*sizeof(int*));	
+int** matrixAlloc(int rows, int cols) {
+	int** matrix = (int**) malloc(rows*sizeof(int*));
 	// Allocate space for matrix
-	for (i = 0; i < rowsA; i++) {
-		matrix[i] = (int*) malloc(colsB*sizeof(int));
+	for (int i = 0; i < rows; i++) {
+		matrix[i] = (int*) malloc(cols*sizeof(int));
 	}
-	return matrix
+	return matrix;
 }
 
 // Function that opens a file and converts the matrix inside to a matrix of type float**
 int** createMatrix(int cols, int rows) {
 	// Allocate space for variable matrix
-	int** matrix = matrixAlloc();
+	int** matrix = matrixAlloc(rows, cols);
 
 	// Fill variable matrix with contents from the file
 	for (int i = 0; i < rows; i++)
@@ -40,7 +40,7 @@ int** matrixMultiply(int** A, int** B, int rowsA, int colsA, int rowsB, int cols
 	if (colsA != rowsB)
 		return NULL;
 
-	int** matrix = allocMatrix();
+	int** matrix = matrixAlloc(rowsA, colsB);
 	int i = 0;
 	#pragma omp parallel for private(i) shared(A, B, matrix)
 	// Populate matrix with the multiplication AB
@@ -82,14 +82,14 @@ void printMatrix(int** matrix, int cols, int rows) {
 
 int main() {
     int repetitions = 1;
-    int rows = 1000;
-    int cols = 1000;
+    int rows = 4000;
+    int cols = 4000;
 
     int** m1 = createMatrix(rows, cols);
     int** m2 = createMatrix(rows, cols);
     int** m3;
 
-	omp_set_num_threads(4);
+	// omp_set_num_threads(4);
 
     double totalTime = 0;
     for (int i = 0; i < repetitions; i++) {
@@ -97,7 +97,7 @@ int main() {
         auto start = std::chrono::high_resolution_clock::now();
         m3 = matrixMultiply(m1, m2, rows, cols, rows, cols);
         auto end = std::chrono::high_resolution_clock::now();
-        
+
         std::chrono::duration<float, std::milli> duration_ms = end - start;
         totalTime += duration_ms.count();
     }

@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
     cudaSetDevice(dev);
 
     // Code configuration
-    int repetitions = 20;
+    int repetitions = 1;
     int n = 4000;
     int nBytes = n*n * sizeof(int*);
 
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
     cudaMemset(d_C, 0, nBytes);  // Initialize matrix with 0s
 
     // Kernel execution configuration
-    int dimx = 128;
+    int dimx = 32;
     dim3 block(dimx, 1);
     dim3 grid((n + block.x - 1) / block.x, 1);
     printf("grid.x %d grid.y %d block.x %d block.y %d\n", grid.x, grid.y, block.x, block.y);
