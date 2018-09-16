@@ -11,10 +11,12 @@ __global__ void matrixMultiplyGPU(int *A, int *B, int *C, const int n) {
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
     unsigned int iy = threadIdx.y + blockIdx.y * blockDim.y;
 
+    int sum = 0;
     if (ix < n && iy < n) {
         for(int k = 0; k < n; k++) {
-            C[iy * n + ix] += A[iy * n + k] * B[k * n + ix];
+            sum += A[iy * n + k] * B[k * n + ix];
         }
+        C[iy * n + ix] = sum;
     }
 }
 
@@ -54,8 +56,8 @@ int main(int argc, char* argv[]) {
     cudaSetDevice(dev);
 
     // Code configuration
-    int repetitions = 20;
-    int n = 50;
+    int repetitions = 1;
+    int n = 1000;
     int nBytes = n*n * sizeof(int*);
 
     // Input matrix initialization and fill
